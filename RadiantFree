@@ -1,10 +1,3 @@
---[[
-    Radiant Free
-
-]]
-
-
-
 
 
 local DEBUG_MODE = false -- warnings, prints and profiles dont change idiot thanks
@@ -115,9 +108,9 @@ local findFirstChild = game.FindFirstChild
 local findFirstChildOfClass = game.FindFirstChildOfClass
 local isDescendantOf = game.IsDescendantOf
 
--- Just to check another radiant instance is running and close it
+
 local uid = tick() .. math.random(1,100000) .. math.random(1,100000)
-if shared.radiant and shared.radiant.close and shared.radiant.uid~=uid then shared.radiant:close() end
+if shared.ah8 and shared.ah8.close and shared.ah8.uid~=uid then shared.ah8:close() end
 
 -- Main shitty script should start below here
 
@@ -780,7 +773,7 @@ do
     --/ Settings
 
     -- TODO: Other datatypes.
-    settings.fileName = "Radiant_Free_settings.txt" -- Lovely
+    settings.fileName = "Radiant_v8_settings.txt" -- Lovely
     settings.saved = {}
 
     function settings:Get(name, default)
@@ -845,7 +838,7 @@ do
     settings:Load()
 
     spawn(function()
-        while radiant and radiant.enabled do
+        while ah8 and ah8.enabled do
             settings:Save()
             wait(5)
         end
@@ -889,7 +882,7 @@ do
                     return Value
                 end
             end
-            warn(("RADIANT_ERROR : AimbotSettings : Tried to index %s"):format(tostring(index)))
+            warn(("AH8_ERROR : AimbotSettings : Tried to index %s"):format(tostring(index)))
         end;
         __newindex = function(self, index, value)
             if typeof(value) ~= "function" then
@@ -1089,7 +1082,7 @@ do
                     return Value
                 end
             end
-            warn(("RADIANT_ERROR : CrosshairSettings : Tried to index %s"):format(tostring(index)))
+            warn(("AH8_ERROR : CrosshairSettings : Tried to index %s"):format(tostring(index)))
         end;
         __newindex = function(self, index, value)
             if typeof(value) ~= "function" then
@@ -1246,7 +1239,7 @@ do
                     return Value
                 end
             end
-            warn(("RADIANT_ERROR : TracersSettings : Tried to index %s"):format(tostring(index)))
+            warn(("AH8_ERROR : TracersSettings : Tried to index %s"):format(tostring(index)))
         end;
         __newindex = function(self, index, value)
             if typeof(value) ~= "function" then
@@ -1411,7 +1404,7 @@ do
                     return Value
                 end
             end
-            warn(("RADIANT_ERROR : EspSettings : Tried to index %s"):format(tostring(index)))
+            warn(("AH8_ERROR : EspSettings : Tried to index %s"):format(tostring(index)))
         end;
         __newindex = function(self, index, value)
             if typeof(value) ~= "function" then
@@ -1575,7 +1568,7 @@ do
                     return Value
                 end
             end
-            warn(("RADIANT_ERROR : BoxesSettings : Tried to index %s"):format(tostring(index)))
+            warn(("AH8_ERROR : BoxesSettings : Tried to index %s"):format(tostring(index)))
         end;
         __newindex = function(self, index, value)
             if typeof(value) ~= "function" then
@@ -1834,7 +1827,7 @@ do
         local viewportsize = camera.ViewportSize
         if credits == nil then
             credits = newdrawing("Text", {
-                Text = "Radiant Free, StormSolz";
+                Text = "Radiant"; -- yes now be happy this is free
                 Color = Color3.new(255,255,255);
                 Size = 25.0;
                 Transparency = .8;
@@ -1956,7 +1949,7 @@ do
     end
 
     spawn(function()
-        while radiant and radiant.enabled do -- I dont know why I am doing this
+        while ah8 and ah8.enabled do -- I dont know why I am doing this
             for i,v in pairs(hashes) do
                 hashes[i] = nil
                 wait()
@@ -2017,7 +2010,7 @@ do
     local fireonthink = event.new(run.onthink)
     local fireonrender = event.new(run.onrender)
 
-    local rstname = "radiant.Renderstep"
+    local rstname = "AH.Renderstep"
     bindEvent(renderstep, function(delta)
         profilebegin(rstname)
         local ntime = tick()
@@ -2029,7 +2022,7 @@ do
             profilebegin(v.name)
             xpcall(v.func, function(err)
                 if (DEBUG_MODE == true) then
-                    Warn("RADIANT_ERROR (RENDERSTEPPED) : Failed to run %s! %s | %s", v.name, tostring(err), debug.traceback())
+                    Warn("AH8_ERROR (RENDERSTEPPED) : Failed to run %s! %s | %s", v.name, tostring(err), debug.traceback())
                 end
                 engine[i] = nil
             end, run.dt)
@@ -2040,7 +2033,7 @@ do
         profileend(rstname)
     end)
 
-    local hbtname = "radiant.Heartbeat"
+    local hbtname = "AH.Heartbeat"
     bindEvent(heartbeat, function(delta)
         profilebegin(hbtname)
 
@@ -2049,7 +2042,7 @@ do
             profilebegin(v.name)
             xpcall(v.func, function(err)
                 if (DEBUG_MODE == true) then
-                    Warn("RADIANT_ERROR (HEARTBEAT) : Failed to run %s! %s | %s", v.name, tostring(err), debug.traceback())
+                    Warn("AH8_ERROR (HEARTBEAT) : Failed to run %s! %s | %s", v.name, tostring(err), debug.traceback())
                 end
                 heartengine[i] = nil
             end, delta)
@@ -2060,7 +2053,7 @@ do
         profileend(hbtname)
     end)
 
-    local stpname = "RADIANT_Stepped"
+    local stpname = "AH.Stepped"
     bindEvent(stepped, function(delta)
         
         profilebegin(stpname)
@@ -2070,7 +2063,7 @@ do
             profilebegin(v.name)
             xpcall(v.func, function(err)
                 if (DEBUG_MODE == true) then
-                    Warn("RADIANT_ERROR (STEPPED) : Failed to run %s! %s | %s", v.name, tostring(err), debug.traceback())
+                    Warn("AH8_ERROR (STEPPED) : Failed to run %s! %s | %s", v.name, tostring(err), debug.traceback())
                 end
                 heartengine[i] = nil
             end, delta)
@@ -2086,8 +2079,8 @@ do
     --/ Main or something I am not sure what I am writing anymore
     settings:Save()
 
-    radiant.enabled = true
-    function radiant:close()
+    ah8.enabled = true
+    function ah8:close()
         spawn(function() pcall(visuals.End, visuals) end)
         spawn(function() pcall(aimbot.End, aimbot) end)
         spawn(function() pcall(hud.End, hud) end)
@@ -2096,24 +2089,24 @@ do
                 pcall(function() v:Disconnect() end)
             end
         end)
-        radiant = nil
-        shared.radiant = nil -- k
+        ah8 = nil
+        shared.ah8 = nil -- k
 
         settings:Save()
     end
 
-    radiant.visible = hud.Visible
-    function radiant:show()
+    ah8.visible = hud.Visible
+    function ah8:show()
         hud:show()
-        radiant.visible = hud.Visible
+        ah8.visible = hud.Visible
     end
 
-    function radiant:hide()
+    function ah8:hide()
         hud:hide()
-        radiant.visible = hud.Visible
+        ah8.visible = hud.Visible
     end
 
-    setmetatable(radiant, { -- ok safazi be happy now
+    setmetatable(ah8, { -- ok safazi be happy now
         __newindex = function(self, index, value)
             if (index == "Keybind") then
                 settings:Set("hud.keybind", value)
@@ -2123,7 +2116,7 @@ do
         end;
     })
 
-    shared.radiant = radiant
+    shared.ah8 = ah8
 
     local players = game:GetService("Players")
     local loc = players.LocalPlayer
@@ -2451,7 +2444,7 @@ end)
 Hud:AddButton({
     Text = "Exit"
 }, function()
-    radiant:close()
+    ah8:close()
 end)
 
 warn("RADIANT_MAIN : Reached end of script")
